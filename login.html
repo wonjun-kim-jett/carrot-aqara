@@ -51,17 +51,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
     <!--<script type="text/javascript" src="./js/jquery.ajax-cross-origin.min.js"></script>-->
     <script>
-
-        /*$.ajaxPrefilter(function(options) {
-            if (options.crossDomain && jQuery.support.cors) {
-                options.url = 'https://cors-anywhere.herokuapp.com/' + options.url;
-            }
-        });
-        */
-
-        $.ajaxPrefilter('json', function(options, orig, jqXHR) {    
-            return 'jsonp'
-        });
         
         //Nonce 만들고
         function generateNonce() {
@@ -152,10 +141,6 @@
                             "nonce": nonce,
                             "sign": sign
                         };
-                        /*const requestBody = {
-                            intent: "query.device.info",
-                            data: {}
-                        };*/
 
                         //바디 임의로 만듦
                         const requestBody = {
@@ -168,10 +153,9 @@
                         
                         $.ajax({
                             url: "https://open-kr.aqara.com/v3.0/open/api",
-                            type: "POST",
-                            crossDomain: true,
-                            headers: headers,
                             contentType: "application/json",
+                            type: "POST",
+                            headers: headers,
                             data: JSON.stringify(requestBody),
                             success: function(devicesResponse) {
                                 //$('#response').append('<br>Devices: ' + JSON.stringify(devicesResponse));
