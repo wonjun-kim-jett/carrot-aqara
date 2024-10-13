@@ -37,6 +37,13 @@
         .button:hover {
             background-color: #0056b3;
         }
+        
+        .string { color: green; }
+        .number { color: darkorange; }
+        .boolean { color: blue; }
+        .null { color: magenta; }
+        .key { color: red; }
+        
         pre {
             text-align: left;
             background: #333;
@@ -46,13 +53,14 @@
             overflow-x: auto;
             white-space: pre-wrap;
         }
+        
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
-    <!--<script type="text/javascript" src="./js/jquery.ajax-cross-origin.min.js"></script>-->
+    
     <script>
         
-        //Nonce 만들고
+        //Nonce 생성
         function generateNonce() {
             return Math.random().toString(36).substring(2);
         }
@@ -70,14 +78,13 @@
             const sortedParams = Object.keys(params).sort().map(key => `${key}=${params[key]}`).join('&');
             const stringToSign = `${sortedParams}${appKey}`.toLowerCase();
 
-            //안되서 콘솔로 찍어봄
             console.log("sortedParams : "+sortedParams);        
             console.log("stringToSign : "+stringToSign);
             console.log("sign : "+md5(stringToSign).toLowerCase());
             return md5(stringToSign).toLowerCase();
         }
 
-        //json형태로 출력해보자
+        //json형태로 출력하는 함수
         function formatJson(json) {
             if (typeof json !== 'string') {
                 json = JSON.stringify(json, undefined, 2);
@@ -109,7 +116,7 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const urlParams = new URLSearchParams(window.location.search);
-            const authCode = urlParams.get('code');        //로드되면서 code 땡김
+            const authCode = urlParams.get('code');        //로드되면서 code 가져옴
 
             //access_token 가져오기
             if (authCode) {
@@ -119,7 +126,7 @@
                     data: {
                         client_id: "1294318924686979072d46db",
                         client_secret: "hoodrlxc9rs8dq501irf46ptwit9ji7p",
-                        redirect_uri: "https://wonjin-kim-jett.github.io/carrot-aqara/login.html",
+                        redirect_uri: "https://wonjun-kim-jett.github.io/carrot-aqara/login.html",
                         grant_type: "authorization_code",
                         code: authCode
                     },
@@ -177,11 +184,7 @@
     </script>
 
     <style>
-        .string { color: green; }
-        .number { color: darkorange; }
-        .boolean { color: blue; }
-        .null { color: magenta; }
-        .key { color: red; }
+
     </style>
 </body>
 </html>
