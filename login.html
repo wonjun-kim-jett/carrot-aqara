@@ -66,16 +66,82 @@
         }
 
         //json형태로 출력해보자
+        <!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aqara 액세스 토큰 및 제품 리스트 요청</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            text-align: center;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
+        }
+        .button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            text-align: center;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        pre {
+            text-align: left;
+            background: #333;
+            color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
+    <script>
+        function generateNonce() {
+            return Math.random().toString(36).substring(2);
+        }
+
+        function generateSign(nonce, accessToken, appId, appKey, keyId, time) {
+            const params = {
+                accesstoken: accessToken,
+                appid: appId,
+                keyid: keyId,
+                nonce: nonce,
+                time: time
+            };
+
+            const sortedParams = Object.keys(params).sort().map(key => `${key}=${params[key]}`).join('&');
+            const stringToSign = `${sortedParams}${appKey}`.toLowerCase();
+            return md5(stringToSign).toLowerCase();
+        }
+
+        //json형태로 출력해보자
         function formatJson(json) {
-            if (typeof json != 'string') {
+            if (typeof json !== 'string') {
                 json = JSON.stringify(json, undefined, 2);
             }
-            json = json.replace(/(&)/g, '&amp;')
-                       .replace(/(>)/g, '&gt;')
-                       .replace(/(<)/g, '&lt;')
-                       .replace(/(\\r\\n|\\n|\\r)/g, '<br/>')
-                       .replace(/(\\t)/g, '&nbsp;&nbsp;&nbsp;&nbsp;');
-
+            json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
             return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(?=:)|\\b(true|false|null)\\b|-?\\d+(\\.\\d+)?(e[+-]?\\d+)?)/g, function (match) {
                 var cls = 'number';
                 if (/^"/.test(match)) {
@@ -97,7 +163,7 @@
 <body>
     <div class="container">
         <h1>아카라 제품 리스트</h1>
-        <p id="response"></p>
+        <pre id="response"></pre>
     </div>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
