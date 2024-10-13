@@ -101,18 +101,18 @@
                             "nonce": nonce,
                             "sign": sign
                         };
-                        /*const requestBody = {
+                        const requestBody = {
                             intent: "query.device.info",
                             data: {}
-                        };*/
+                        };
 
-                        const requestBody = {
+                        /*const requestBody = {
                             "intent": "query.device.info",
                             "data": {
                                 "pageNum": 1,
                                 "pageSize": 50
                             }
-                        };
+                        };*/
 
                         $.ajax({
                             url: "https://open-kr.aqara.com/v3.0/open/api",
@@ -120,7 +120,7 @@
                             headers: headers,
                             contentType: "application/json",
                             data: requestBody,
-                            //data: JSON.stringify(requestBody),
+                            data: JSON.stringify(requestBody),
                             success: function(devicesResponse) {
                                 $('#response').append('<br>Devices: ' + JSON.stringify(devicesResponse));
                             },
