@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aqara 액세스 토큰 요청</title>
+    <title>Aqara 액세스 토큰 및 제품 리스트 요청</title>
     <style>
         body {
             display: flex;
@@ -40,7 +40,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>액세스 토큰 요청</h1>
+        <h1>제품 리스트 요청</h1>
         <p id="response"></p>
     </div>
     <script>
@@ -60,7 +60,23 @@
                         code: authCode
                     },
                     success: function(response) {
-                        $('#response').text('Access Token: ' + response.access_token);
+                        const accessToken = response.access_token;
+                        $('#response').text('Access Token: ' + accessToken);
+
+                        // 제품 리스트 요청
+                        $.ajax({
+                            url: "https://open-kr.aqara.com/v3.0/open/devices",
+                            type: "GET",
+                            headers: {
+                                "Authorization": "Bearer " + accessToken
+                            },
+                            success: function(devicesResponse) {
+                                $('#response').append('<br>Devices: ' + JSON.stringify(devicesResponse.devices));
+                            },
+                            error: function(error) {
+                                $('#response').append('<br>Error: ' + error.responseText);
+                            }
+                        });
                     },
                     error: function(error) {
                         $('#response').text('Error: ' + error.responseText);
@@ -72,4 +88,3 @@
         });
     </script>
 </body>
-</html>
