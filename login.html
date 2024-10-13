@@ -63,15 +63,14 @@
                         const accessToken = response.access_token;
                         $('#response').text('Access Token: ' + accessToken);
 
-                        // 제품 리스트 요청
                         $.ajax({
-                            url: "https://open-kr.aqara.com/v3.0/open/devices",
+                            url: "https://open-kr.aqara.com/v3.0/open/api/v1.0/devices",
                             type: "GET",
                             headers: {
                                 "Authorization": "Bearer " + accessToken
                             },
                             success: function(devicesResponse) {
-                                $('#response').append('<br>Devices: ' + JSON.stringify(devicesResponse.devices));
+                                $('#response').append('<br>Devices: ' + JSON.stringify(devicesResponse));
                             },
                             error: function(error) {
                                 $('#response').append('<br>Error: ' + error.responseText);
@@ -88,3 +87,4 @@
         });
     </script>
 </body>
+</html>
