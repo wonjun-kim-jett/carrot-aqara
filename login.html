@@ -101,18 +101,18 @@
                             "nonce": nonce,
                             "sign": sign
                         };
-                        const requestBody = {
+                        /*const requestBody = {
                             intent: "query.device.info",
                             data: {}
-                        };
-
-                        /*const requestBody = {
-                            "intent": "query.device.info",
-                            "data": {
-                                "pageNum": 1,
-                                "pageSize": 50
-                            }
                         };*/
+
+                        const requestBody = {
+                            intent: "query.device.info",
+                            data: {
+                                pagenum: 1,
+                                pagSize: 50
+                            }
+                        };
 
                         $.ajax({
                             url: "https://open-kr.aqara.com/v3.0/open/api",
