@@ -37,6 +37,17 @@
         }
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
+    <script>
+        function generateNonce() {
+            return Math.random().toString(36).substring(2);
+        }
+
+        function generateSign(nonce, accessToken, appId, appKey, time) {
+            const params = `accesstoken=${accessToken}&appid=${appId}&appkey=${appKey}&nonce=${nonce}&time=${time}`;
+            return md5(params).toLowerCase();
+        }
+    </script>
 </head>
 <body>
     <div class="container">
@@ -63,12 +74,30 @@
                         const accessToken = response.access_token;
                         $('#response').text('Access Token: ' + accessToken);
 
+                        // 제품 리스트 요청
+                        const nonce = generateNonce();
+                        const currentTime = new Date().getTime();
+                        const sign = generateSign(nonce, accessToken, "1294318924686979072d46db", "hoodrlxc9rs8dq501irf46ptwit9ji7p", currentTime);
+                        const headers = {
+                            "appid": "1294318924686979072d46db",
+                            "accesstoken": accessToken,
+                            "keyid": "K.1294318924770865152",
+                            "appkey": "hoodrlxc9rs8dq501irf46ptwit9ji7p",
+                            "time": currentTime,
+                            "nonce": nonce,
+                            "sign": sign
+                        };
+                        const requestBody = {
+                            intent: "query.device.info",
+                            data: {}
+                        };
+
                         $.ajax({
-                            url: "https://open-kr.aqara.com/v3.0/open/api/v1.0/devices",
-                            type: "GET",
-                            headers: {
-                                "Authorization": "Bearer " + accessToken
-                            },
+                            url: "https://open-kr.aqara.com/v3.0/open/api",
+                            type: "POST",
+                            headers: headers,
+                            contentType: "application/json",
+                            data: JSON.stringify(requestBody),
                             success: function(devicesResponse) {
                                 $('#response').append('<br>Devices: ' + JSON.stringify(devicesResponse));
                             },
