@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Aqara OAuth Redirect</title>
+</head>
+<body>
+    <h1>Aqara 로그인 성공!</h1>
+    <p id="authCode">인가 코드를 받는 중...</p>
+
+    <script>
+        // URL에서 인가 코드 추출
+        const params = new URLSearchParams(window.location.search);
+        const authCode = params.get('code');
+
+        if (authCode) {
+            document.getElementById('authCode').innerText = `받은 인가 코드: ${authCode}`;
+        } else {
+            document.getElementById('authCode').innerText = '인가 코드를 받을 수 없습니다.';
+        }
+
+        // 받은 인가 코드를 서버로 보내거나 추가 처리를 합니다.
+        // 예: 서버로 AJAX 요청
+        // const xhr = new XMLHttpRequest();
+        // xhr.open('POST', '/handle-auth-code', true);
+        // xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+        // xhr.send(JSON.stringify({ code: authCode }));
+    </script>
+</body>
+</html>
