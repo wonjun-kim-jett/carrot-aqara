@@ -158,7 +158,7 @@
                             data: JSON.stringify(requestBody),
                             success: function(devicesResponse) {
                                 //$('#response').append('<br>Devices: ' + JSON.stringify(devicesResponse));
-                                $('#response').html(formatJson(devicesResponse));
+                                $('#response').html(formatJson(devicesResponse));        //json처럼 출력하는 함수 주워옴
                             },
                             error: function(error) {
                                 $('#response').append('<br>Error: ' + error.responseText);
