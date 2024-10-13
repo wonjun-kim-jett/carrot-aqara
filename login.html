@@ -55,6 +55,8 @@
             const sortedParams = Object.keys(params).sort().map(key => `${key}=${params[key]}`).join('&');
             const stringToSign = `${sortedParams}${appKey}`.toLowerCase();
 
+            console.log("sortedParams : "+sortedParams);
+            console.og("stringToSign : "+stringToSign);
             console.log("sign : "+md5(stringToSign).toLowerCase());
             return md5(stringToSign).toLowerCase();
         }
