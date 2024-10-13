@@ -39,10 +39,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
     <script>
+
+        //Nonce 만들고
         function generateNonce() {
             return Math.random().toString(36).substring(2);
         }
 
+        //sign 조립
         function generateSign(nonce, accessToken, appId, appKey, keyId, time) {
             const params = {
                 Accesstoken: accessToken,
@@ -55,7 +58,8 @@
             const sortedParams = Object.keys(params).sort().map(key => `${key}=${params[key]}`).join('&');
             const stringToSign = `${sortedParams}${appKey}`.toLowerCase();
 
-            console.log("sortedParams : "+sortedParams);
+            //안되서 콘솔로 찍어봄
+            console.log("sortedParams : "+sortedParams);        
             console.log("stringToSign : "+stringToSign);
             console.log("sign : "+md5(stringToSign).toLowerCase());
             return md5(stringToSign).toLowerCase();
@@ -70,8 +74,9 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const urlParams = new URLSearchParams(window.location.search);
-            const authCode = urlParams.get('code');
+            const authCode = urlParams.get('code');        //로드되면서 code 땡김
 
+            //access_token 가져오기
             if (authCode) {
                 $.ajax({
                     url: "https://open-kr.aqara.com/v3.0/open/access_token",
@@ -87,7 +92,7 @@
                         const accessToken = response.access_token;
                         $('#response').text('Access Token: ' + accessToken);
 
-                        // 제품 리스트 요청
+                        // 제품 리스트 가져오기
                         const nonce = generateNonce();
                         const currentTime = new Date().getTime();
                         const sign = generateSign(nonce, accessToken, "1294318924686979072d46db", "hoodrlxc9rs8dq501irf46ptwit9ji7p", "K.1294318924770865152", currentTime);
@@ -106,6 +111,7 @@
                             data: {}
                         };*/
 
+                        //바디 임의로 만듦
                         const requestBody = {
                             intent: "query.device.info",
                             data: {
