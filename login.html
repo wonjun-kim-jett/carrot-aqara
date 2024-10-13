@@ -92,7 +92,7 @@
                         const currentTime = new Date().getTime();
                         const sign = generateSign(nonce, accessToken, "1294318924686979072d46db", "hoodrlxc9rs8dq501irf46ptwit9ji7p", "K.1294318924770865152", currentTime);
                         const headers = {
-                            "Access-Control-Allow-Origin": "*,*",
+                            "Access-Control-Allow-Origin": "*",
                             "appid": "1294318924686979072d46db",
                             "accesstoken": accessToken,
                             "keyid": "K.1294318924770865152",
@@ -101,9 +101,17 @@
                             "nonce": nonce,
                             "sign": sign
                         };
-                        const requestBody = {
+                        /*const requestBody = {
                             intent: "query.device.info",
                             data: {}
+                        };*/
+
+                        const requestBody = {
+                            "intent": "query.device.info",
+                            "data": {
+                                "pageNum": 1,
+                                "pageSize": 50
+                            }
                         };
 
                         $.ajax({
@@ -111,7 +119,8 @@
                             type: "POST",
                             headers: headers,
                             contentType: "application/json",
-                            data: JSON.stringify(requestBody),
+                            data: requestBody,
+                            //data: JSON.stringify(requestBody),
                             success: function(devicesResponse) {
                                 $('#response').append('<br>Devices: ' + JSON.stringify(devicesResponse));
                             },
