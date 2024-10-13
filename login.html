@@ -58,6 +58,10 @@
             }
         });
         */
+
+        $.ajaxPrefilter('json', function(options, orig, jqXHR) {    
+            return 'jsonp'
+        });
         
         //Nonce 만들고
         function generateNonce() {
@@ -165,6 +169,7 @@
                         $.ajax({
                             url: "https://open-kr.aqara.com/v3.0/open/api",
                             type: "POST",
+                            crossDomain: true,
                             headers: headers,
                             contentType: "application/json",
                             data: JSON.stringify(requestBody),
