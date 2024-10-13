@@ -230,6 +230,7 @@
                             url: "https://open-kr.aqara.com/v3.0/open/api",
                             type: "POST",
                             headers: headers,
+                            contentType: "application/json",
                             data: JSON.stringify(requestBody),
                             success: function(devicesResponse) {
                                 //$('#response').append('<br>Devices: ' + JSON.stringify(devicesResponse));
