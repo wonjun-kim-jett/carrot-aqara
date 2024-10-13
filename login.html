@@ -52,6 +52,12 @@
     <!--<script type="text/javascript" src="./js/jquery.ajax-cross-origin.min.js"></script>-->
     <script>
 
+        $.ajaxPrefilter(function(options) {
+            if (options.crossDomain && jQuery.support.cors) {
+                options.url = 'https://cors-anywhere.herokuapp.com/' + options.url;
+            }
+        });
+        
         //Nonce 만들고
         function generateNonce() {
             return Math.random().toString(36).substring(2);
