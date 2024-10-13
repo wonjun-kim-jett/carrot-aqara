@@ -64,6 +64,34 @@
             console.log("sign : "+md5(stringToSign).toLowerCase());
             return md5(stringToSign).toLowerCase();
         }
+
+        //json형태로 출력해보자
+        function formatJson(json) {
+            if (typeof json != 'string') {
+                json = JSON.stringify(json, undefined, 2);
+            }
+            json = json.replace(/(&)/g, '&amp;')
+                       .replace(/(>)/g, '&gt;')
+                       .replace(/(<)/g, '&lt;')
+                       .replace(/(\\r\\n|\\n|\\r)/g, '<br/>')
+                       .replace(/(\\t)/g, '&nbsp;&nbsp;&nbsp;&nbsp;');
+
+            return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(?=:)|\\b(true|false|null)\\b|-?\\d+(\\.\\d+)?(e[+-]?\\d+)?)/g, function (match) {
+                var cls = 'number';
+                if (/^"/.test(match)) {
+                    if (/:$/.test(match)) {
+                        cls = 'key';
+                    } else {
+                        cls = 'string';
+                    }
+                } else if (/true|false/.test(match)) {
+                    cls = 'boolean';
+                } else if (/null/.test(match)) {
+                    cls = 'null';
+                }
+                return '<span class="' + cls + '">' + match + '</span>';
+            });
+        }
     </script>
 </head>
 <body>
@@ -90,7 +118,8 @@
                     },
                     success: function(response) {
                         const accessToken = response.access_token;
-                        $('#response').text('Access Token: ' + accessToken);
+                        console.log("accessToken :"+accessToken);
+                        //$('#response').text('Access Token: ' + accessToken);
 
                         // 제품 리스트 가져오기
                         const nonce = generateNonce();
@@ -128,7 +157,8 @@
                             data: requestBody,
                             data: JSON.stringify(requestBody),
                             success: function(devicesResponse) {
-                                $('#response').append('<br>Devices: ' + JSON.stringify(devicesResponse));
+                                //$('#response').append('<br>Devices: ' + JSON.stringify(devicesResponse));
+                                $('#response').html(formatJson(devicesResponse));
                             },
                             error: function(error) {
                                 $('#response').append('<br>Error: ' + error.responseText);
@@ -144,5 +174,13 @@
             }
         });
     </script>
+
+    <style>
+        .string { color: green; }
+        .number { color: darkorange; }
+        .boolean { color: blue; }
+        .null { color: magenta; }
+        .key { color: red; }
+    </style>
 </body>
 </html>
