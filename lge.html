@@ -1,16 +1,20 @@
-<button onclick="openLGELogin()">LGE 로그인</button>
-
+<button onclick="openLGLoginPopup()">LG 로그인</button>
 <script>
-function openLGELogin() {
-  const clientId = '1000001008';
-  const redirectUri = encodeURIComponent('https://dev.carrotins.com/product/house-fire');
-  const scope = 'openid profile';
-  const state = Math.random().toString(36).substring(2, 15);
+  function openLGLoginPopup() {
+    const clientId = '1000001008';  // 발급받은 App ID
+    const redirectUri = encodeURIComponent('https://dev.carrotins.com/product/house-fire');
+    const responseType = 'code';
+    const state = Math.random().toString(36).slice(2); // 임의값
+    const countryCode = 'kr'; // 국가 코드 (예: 'kr', 'us')
 
-  const url = `https://qt-kr.m.lgaccount.com/emp/v2/token?` +
-              `response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}` +
-              `&scope=${scope}&state=${state}`;
+    // 인증 URL 생성
+    const authUrl = `https://qt-${countryCode}.m.lgaccount.com/emp/v2/authorize` +
+      `?client_id=${clientId}` +
+      `&redirect_uri=${redirectUri}` +
+      `&response_type=${responseType}` +
+      `&state=${state}`;
 
-  window.open(url, 'lgeLogin', 'width=500,height=700');
-}
+    // 팝업으로 인증 창 열기
+    window.open(authUrl, 'LGLogin', 'width=500,height=600');
+  }
 </script>
