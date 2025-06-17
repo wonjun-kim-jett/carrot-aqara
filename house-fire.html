@@ -1,0 +1,48 @@
+<script>
+async function main() {
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get("code");
+
+  if (!code) {
+    alert("로그인 실패 혹은 취소됨");
+    return;
+  }
+
+  // 1. Access Token 요청
+  const tokenRes = await fetch("https://us.lgeapi.com/oauth/token", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: new URLSearchParams({
+      grant_type: "authorization_code",
+      code: code,
+      redirect_uri: "/house-fire",
+      client_id: "1000001008",
+      client_secret: "fb3dca2449524f519bcba14b882c5bea"
+    })
+  });
+
+  const tokenData = await tokenRes.json();
+  const accessToken = tokenData.access_token;
+  console.log("Access Token:", accessToken);
+
+  // 2. 디바이스 리스트 조회
+  const deviceRes = await fetch("https://ap-test.biz.api.lge.com/v1/devices", {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "X-Api-Key": "23569d0f550e4c47ab1ccf1d02a3093f",
+      "X-Api-Secret": "fb3dca2449524f519bcba14b882c5bea"
+    }
+  });
+
+  const deviceList = await deviceRes.json();
+  console.log("디바이스 목록:", deviceList);
+
+  // DOM에 출력해보기
+  document.body.innerHTML = `<pre>${JSON.stringify(deviceList, null, 2)}</pre>`;
+}
+
+main();
+</script>
