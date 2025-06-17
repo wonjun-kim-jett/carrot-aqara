@@ -8,7 +8,7 @@
     const countryCode = 'kr'; // 국가 코드 (예: 'kr', 'us')
 
     // 인증 URL 생성
-    const authUrl = `https://qt-${countryCode}.m.lgaccount.com/emp/v2/authorize` +
+    const authUrl = `https://${countryCode}.m.lgaccount.com/emp/v2/authorize` +
       `?client_id=${clientId}` +
       `&redirect_uri=${redirectUri}` +
       `&response_type=${responseType}` +
