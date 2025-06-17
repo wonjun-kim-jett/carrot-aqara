@@ -7,7 +7,7 @@ function openLGELogin() {
   const scope = 'openid profile';
   const state = Math.random().toString(36).substring(2, 15);
 
-  const url = `https://us.lgeapi.com/oauth/authorize?` +
+  const url = `https://kr.lgeapi.com/login/oauth/authorize?` +
               `response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}` +
               `&scope=${scope}&state=${state}`;
 
