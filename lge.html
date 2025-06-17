@@ -1,0 +1,16 @@
+<button onclick="openLGELogin()">LGE 로그인</button>
+
+<script>
+function openLGELogin() {
+  const clientId = '1000001008';
+  const redirectUri = encodeURIComponent('https://dev.carrotins.com/product/house-fire');
+  const scope = 'openid profile';
+  const state = Math.random().toString(36).substring(2, 15);
+
+  const url = `https://us.lgeapi.com/oauth/authorize?` +
+              `response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}` +
+              `&scope=${scope}&state=${state}`;
+
+  window.open(url, 'lgeLogin', 'width=500,height=700');
+}
+</script>
