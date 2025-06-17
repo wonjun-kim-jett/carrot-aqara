@@ -7,7 +7,7 @@ function openLGELogin() {
   const scope = 'openid profile';
   const state = Math.random().toString(36).substring(2, 15);
 
-  const url = `https://ap-test.biz.api.lge.com/oauth/authorize?` +
+  const url = `https://qt-kr.m.lgaccount.com/emp/v2/token?` +
               `response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}` +
               `&scope=${scope}&state=${state}`;
 
