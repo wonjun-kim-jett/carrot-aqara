@@ -1,31 +1,18 @@
-<button onclick="sendLoginRequest()">LG 로그인</button>
+<button onclick="openLGLoginPopup()">LG 로그인</button>
 
 <script>
-  function sendLoginRequest() {
-    const clientId = '1000001008';  // 발급받은 App ID
-    const redirectUri = encodeURIComponent('https://dev.carrotins.com/product/house-fire');
-    const responseType = 'code';
-    const state = 'page';  // 상태값 (CSRF 방지용)
+  function openLGLoginPopup() {
+  const clientId = '1000001008';
+  const redirectUri = encodeURIComponent('https://dev.carrotins.com/product/house-fire');
+  const responseType = 'code';
+  const state = 'page';
 
-    // 요청 파라미터 설정
-    const params = new URLSearchParams();
-    params.append('client_id', clientId);
-    params.append('redirect_uri', redirectUri);
-    params.append('response_type', responseType);
-    params.append('state', state);
+  const authUrl = `https://qt-kr.m.lgaccount.com/emp/v2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}&state=${state}`;
 
-    // 요청 보내기 (POST 방식으로)
-    fetch('https://qt-kr.m.lgaccount.com/emp/v2/authorize', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: params.toString()  // x-www-form-urlencoded 방식으로 데이터 전송
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log(data); // 응답 데이터 확인
-    })
-    .catch(error => console.error('Error:', error));
-  }
+  window.open(
+    authUrl,
+    'lgLoginPopup',
+    'width=600,height=700,scrollbars=yes'
+  );
+}
 </script>
