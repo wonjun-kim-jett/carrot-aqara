@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>LG 로그인 완료</title>
+</head>
+<body>
+  <h2>로그인 완료 처리 중...</h2>
+  <pre id="output">결과 로딩 중...</pre>
+
+  <script>
+    const clientId = '23569d0f550e4c47ab1ccf1d02a3093f';
+    const clientSecret = 'fb3dca2449524f519bcba14b882c5bea';
+    const redirectUri = 'https://www.carrotins.com/redirect.html';
+
+    window.onload = async function () {
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get("code");
+
+      if (!code) {
+        log("인증 코드가 없습니다.");
+        return;
+      }
+
+      log(`✅ 인증 코드 받음: ${code}`);
+
+      const token = await requestAccessToken(code);
+      if (token) {
+        log(`access_token: ${token}`);
+        const devices = await getDeviceList(token);
+        log(`디바이스 목록:\n${JSON.stringify(devices, null, 2)}`);
+
+        // 필요한 경우 부모 창으로 전달
+        if (window.opener && !window.opener.closed) {
+          window.opener.postMessage({ token, devices }, "*");
+        }
+
+        // 팝업 닫기
+        setTimeout(() => window.close(), 1500);
+      }
+    };
+
+    async function requestAccessToken(code) {
+      const tokenUrl = "https://qt-kr.m.lgaccount.com/emp/v2/token";
+
+      const params = new URLSearchParams();
+      params.append("grant_type", "authorization_code");
+      params.append("code", code);
+      params.append("client_id", clientId);
+      params.append("client_secret", clientSecret);
+      params.append("redirect_uri", redirectUri);
+
+      try {
+        const res = await fetch(tokenUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          body: params.toString()
+        });
+
+        const json = await res.json();
+        return json.access_token;
+      } catch (e) {
+        log("토큰 요청 실패: " + e.message);
+        return null;
+      }
+    }
+
+    async function getDeviceList(accessToken) {
+      const apiUrl = "https://ap-test.biz.api.lge.com/path/to/device/list"; // ← 실제로 교체 필요
+
+      try {
+        const res = await fetch(apiUrl, {
+          method: "GET",
+          headers: {
+            "Authorization": `Bearer ${accessToken}`,
+            "X-Api-Key": clientId,
+            "X-api-Secret": clientSecret,
+            "Accept": "application/json"
+          }
+        });
+
+        return await res.json();
+      } catch (e) {
+        log("디바이스 목록 요청 실패: " + e.message);
+        return null;
+      }
+    }
+
+    function log(msg) {
+      const el = document.getElementById("output");
+      el.textContent += msg + "\n";
+      console.log(msg);
+    }
+  </script>
+</body>
+</html>
