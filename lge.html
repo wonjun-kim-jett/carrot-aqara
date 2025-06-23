@@ -2,11 +2,11 @@
 
 <script>
 function openLGLoginPopup() {
-  const clientId = '1000001008'; // LG에서 받은 Client ID
+  const clientId = '23569d0f550e4c47ab1ccf1d02a3093f'; // LG에서 받은 Client ID
   const redirectUri = encodeURIComponent('https://dev.carrotins.com/product/house-fire');
-  const state = 'page'; // 필요 시 로그인 후 상태값 전달용
+  const state = 'aa123'; // 필요 시 로그인 후 상태값 전달용
 
-  const authUrl = `https://kr.m.lgaccount.com/emp/v2/authorize` +
+  const authUrl = `https://qt-kr.m.lgaccount.com/emp/v2/authorize` +
     `?client_id=${clientId}` +
     `&redirect_uri=${redirectUri}` +
     `&response_type=code` +
