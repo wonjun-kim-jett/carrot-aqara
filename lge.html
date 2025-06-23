@@ -1,17 +1,27 @@
-<button onclick="openLGLoginPopup()">LG 로그인</button>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>LG 로그인 시작</title>
+</head>
+<body>
+  <h1>LG OAuth 시작</h1>
+  <button onclick="openLGLogin()">🔐 LG 로그인</button>
 
-<script>
-function openLGLoginPopup() {
-  const clientId = '23569d0f550e4c47ab1ccf1d02a3093f'; // LG에서 받은 Client ID
-  const redirectUri = encodeURIComponent('https://dev.carrotins.com/product/house-fire');
-  const state = 'aa123'; // 필요 시 로그인 후 상태값 전달용
+  <script>
+    function openLGLogin() {
+      const clientId = '23569d0f550e4c47ab1ccf1d02a3093f';
+      const redirectUri = encodeURIComponent('https://wonjun-kim-jett.github.io/carrot-aqara/lgeok.html');
+      const state = 'abc123';
 
-  const authUrl = `https://qt-kr.m.lgaccount.com/emp/v2/authorize` +
-    `?client_id=${clientId}` +
-    `&redirect_uri=${redirectUri}` +
-    `&response_type=code` +
-    `&state=${state}`;
+      const authUrl = `https://qt-kr.m.lgaccount.com/emp/v2/authorize` +
+        `?client_id=${clientId}` +
+        `&redirect_uri=${redirectUri}` +
+        `&response_type=code` +
+        `&state=${state}`;
 
-  window.open(authUrl, 'lgLoginPopup', 'width=500,height=700,scrollbars=yes');
-}
-</script>
+      window.open(authUrl, 'LGLoginPopup', 'width=500,height=700');
+    }
+  </script>
+</body>
+</html>
